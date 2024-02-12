@@ -1,3 +1,5 @@
+// Behavorial pattern that creates notifications to an object when another object is changed.
+
 type Subject = {
   attach: (observer: Observer) => void,
   detach: (observer: Observer) => void,

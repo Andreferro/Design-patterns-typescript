@@ -1,8 +1,8 @@
 // Structural pattern that provides a simplified interface to a library, a framework, or any other complex set of classes.
 
 class Player {
-  name: string | undefined;
-  age: number | undefined;
+  name?: string;
+  age?: number;
 
   setName(n: string) {
     this.name = n;
@@ -14,7 +14,7 @@ class Player {
 }
 
 class Weapon {
-  type: string | undefined;
+  type?: string;
 
   setType(t: string) {
     this.type = t;
@@ -22,8 +22,8 @@ class Weapon {
 }
 
 class Vehicle {
-  model: string | undefined;
-  topSpeed: number | undefined;
+  model?: string;
+  topSpeed?: number;
 
   setModel(m: string) {
     this.model = m;
@@ -35,9 +35,9 @@ class Vehicle {
 }
 
 export default class Game {
-  character: Player | undefined;
-  weapon: Weapon | undefined;
-  vehicle: Vehicle | undefined;
+  character?: Player;
+  weapon?: Weapon;
+  vehicle?: Vehicle;
 
   constructor() {
     this.character = new Player();
