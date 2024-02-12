@@ -55,3 +55,7 @@ subject.detach(observer2);
 subject.changeSystemState();
 subject.changeSystemState();
 
+// Template
+import { createCharacter, EnemyCharacter, MainCharacter } from './patterns/template';
+createCharacter(new MainCharacter(), 'John');
+createCharacter(new EnemyCharacter());
