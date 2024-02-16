@@ -59,3 +59,11 @@ subject.changeSystemState();
 import { createCharacter, EnemyCharacter, MainCharacter } from './patterns/template';
 createCharacter(new MainCharacter(), 'John');
 createCharacter(new EnemyCharacter());
+
+
+// Factory
+import { CharacterFactory } from './patterns/factory';
+const mainCharacter = new CharacterFactory().create('player', 'John',  'warrior', 'axe');
+const enemyCharacter = new CharacterFactory().create('enemy', 'John',  'orc');
+mainCharacter.getCharacter();
+enemyCharacter.getCharacter();

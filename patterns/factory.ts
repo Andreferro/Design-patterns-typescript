@@ -16,8 +16,6 @@ abstract class EnemyCharacter implements Omit<Character, 'weapon'> {
   public name?: string;
   public class: EnemyCharacterClass;
   public readonly type: CharacterType = 'enemy';
-
-  abstract factoryMethod(name: string, characterClass: EnemyCharacterClass): void;
 }
 
 abstract class MainCharacter implements Character {
@@ -25,15 +23,14 @@ abstract class MainCharacter implements Character {
   public class: CharacterClass;
   public weapon: WeaponType;
   public readonly type: CharacterType = 'player';
-
-  abstract factoryMethod(name: string, characterClass: CharacterClass, weapon: WeaponType): void;
 }
 
-export class CreateCharacter extends MainCharacter {
-  public factoryMethod(name: string, characterClass: CharacterClass, weapon: WeaponType): void {
-      this.name = name;
-      this.class = characterClass;
-      this.weapon = weapon;
+class CreateCharacter extends MainCharacter {
+  constructor(name: string, characterClass: CharacterClass, weapon: WeaponType) {
+    super();
+    this.name = name;
+    this.class = characterClass;
+    this.weapon = weapon;
   }
 
   public getCharacter() {
@@ -45,10 +42,11 @@ export class CreateCharacter extends MainCharacter {
   }
 }
 
-export class CreateEnemy extends EnemyCharacter {
-  public factoryMethod(name: string, characterClass: EnemyCharacterClass): void {
-      this.name = name;
-      this.class = characterClass;
+class CreateEnemy extends EnemyCharacter {
+  constructor(name: string, characterClass: EnemyCharacterClass) {
+    super();
+    this.name = name;
+    this.class = characterClass;
   }
 
   public getCharacter() {
@@ -56,5 +54,16 @@ export class CreateEnemy extends EnemyCharacter {
     console.log(`Type: ${this.type}`);
     console.log(`Class: ${this.class}`);
     console.log(`-----------------------`);
+  }
+}
+
+export class CharacterFactory {
+  public create(type: CharacterType, name: string, characterClass: CharacterClass | EnemyCharacterClass, weapon?: WeaponType) {
+    if (type === 'player') {
+      return new CreateCharacter(name, characterClass as CharacterClass, weapon);
+    }
+    else {
+      return new CreateEnemy(name, characterClass as EnemyCharacterClass);
+    }
   }
 }
