@@ -1,69 +1,73 @@
 // 
 
-type CharacterType = 'player' | 'enemy' | undefined;
+type CharacterType = 'player' | 'enemy' | 'npc' | undefined;
 type CharacterClass = 'warrior' | 'wizard' | 'archer' | undefined;
 type EnemyCharacterClass = 'orc' | 'dragon' | undefined;
 type WeaponType = 'axe' | 'sword' | 'hammer' | 'staff' | 'bow' | undefined;
 
 type Character = {
-  name?: string,
+  name: string,
   type: CharacterType,
-  class: CharacterClass | EnemyCharacterClass,
-  weapon: WeaponType,
+  characterClass: CharacterClass | EnemyCharacterClass,
+  weapon?: WeaponType,
 }
 
-abstract class EnemyCharacter implements Omit<Character, 'weapon'> {
-  public name?: string;
-  public class: EnemyCharacterClass;
-  public readonly type: CharacterType = 'enemy';
-}
+class SimpleCharacter implements Character {
+  name: string = '';
+  type: CharacterType;
+  characterClass: CharacterClass | EnemyCharacterClass;
+  weapon?: WeaponType;
 
-abstract class MainCharacter implements Character {
-  public name?: string;
-  public class: CharacterClass;
-  public weapon: WeaponType;
-  public readonly type: CharacterType = 'player';
-}
-
-class CreateCharacter extends MainCharacter {
-  constructor(name: string, characterClass: CharacterClass, weapon: WeaponType) {
-    super();
+  constructor(name: string, characterClass: CharacterClass | EnemyCharacterClass, weapon?: WeaponType) {
     this.name = name;
-    this.class = characterClass;
+    this.characterClass = characterClass;
     this.weapon = weapon;
   }
 
   public getCharacter() {
+    console.log(`-----------------------`);
     console.log(`Name: ${this.name}`);
     console.log(`Type: ${this.type}`);
-    console.log(`Class: ${this.class}`);
+    console.log(`Class: ${this.characterClass}`);
     console.log(`Weapon: ${this.weapon}`);
-    console.log(`-----------------------`);
   }
 }
 
-class CreateEnemy extends EnemyCharacter {
+class MainCharacter extends SimpleCharacter {
+  constructor(name: string, characterClass: CharacterClass, weapon: WeaponType) {
+    super(name, characterClass, weapon);
+    this.type = 'player';
+  }
+}
+
+class EnemyCharacter extends SimpleCharacter {
   constructor(name: string, characterClass: EnemyCharacterClass) {
-    super();
-    this.name = name;
-    this.class = characterClass;
-  }
-
-  public getCharacter() {
-    console.log(`Name: ${this.name}`);
-    console.log(`Type: ${this.type}`);
-    console.log(`Class: ${this.class}`);
-    console.log(`-----------------------`);
+    super(name, characterClass);
+    this.type = 'enemy';
   }
 }
 
-export class CharacterFactory {
-  public create(type: CharacterType, name: string, characterClass: CharacterClass | EnemyCharacterClass, weapon?: WeaponType) {
-    if (type === 'player') {
-      return new CreateCharacter(name, characterClass as CharacterClass, weapon);
-    }
-    else {
-      return new CreateEnemy(name, characterClass as EnemyCharacterClass);
+class NpcCharacter extends SimpleCharacter {
+  constructor(name: string, characterClass: CharacterClass, weapon: WeaponType) {
+    super(name, characterClass, weapon);
+    this.type = 'npc';
+  }
+}
+
+type CharacterClassType = {
+  player: MainCharacter,
+  enemy: EnemyCharacter,
+  npc: NpcCharacter,
+};
+
+export class CharacterCreator {
+  static create<K extends keyof CharacterClassType>(characterType: K, options: Omit<Character, 'type'>): CharacterClassType[K]{
+    if (characterType === 'player') {
+      return new MainCharacter(options.name, (options.characterClass as CharacterClass), options.weapon);
+    } else if (characterType === 'enemy') {
+      return new EnemyCharacter(options.name, (options.characterClass as EnemyCharacterClass));
+    } else {
+      return new NpcCharacter(options.name, (options.characterClass as CharacterClass), options.weapon);
     }
   }
 }

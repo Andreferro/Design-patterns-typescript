@@ -62,8 +62,8 @@ createCharacter(new EnemyCharacter());
 
 
 // Factory
-import { CharacterFactory } from './patterns/factory';
-const mainCharacter = new CharacterFactory().create('player', 'John',  'warrior', 'axe');
-const enemyCharacter = new CharacterFactory().create('enemy', 'John',  'orc');
+import { CharacterCreator } from './patterns/factory';
+const mainCharacter = CharacterCreator.create<'player'>('player', {name: 'John', characterClass: 'wizard', weapon: 'staff'});
+const enemyCharacter = CharacterCreator.create<'enemy'>('enemy', {name: 'Lennon', characterClass: 'orc'});
 mainCharacter.getCharacter();
 enemyCharacter.getCharacter();
