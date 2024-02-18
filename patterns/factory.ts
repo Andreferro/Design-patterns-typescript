@@ -1,4 +1,5 @@
-// 
+// Creational pattern that creates an interface that is used to make objects from a subclass, allowing it to alter the type of the object created.
+// It differs from "template" by focusing on the object creation instead of the structure.
 
 type CharacterType = 'player' | 'enemy' | 'npc' | undefined;
 type CharacterClass = 'warrior' | 'wizard' | 'archer' | undefined;

@@ -1,4 +1,4 @@
-// Singleton example
+// Singleton
 import { PeopleSingleton, PeopleType, person } from './patterns/singleton';
 
 let newPerson: PeopleType | undefined;
